@@ -4,6 +4,7 @@ import com.pbcompass.msclientes.dto.ClienteCadastrarDto;
 import com.pbcompass.msclientes.entity.Cliente;
 import com.pbcompass.msclientes.service.ClienteService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -13,6 +14,7 @@ import java.net.URI;
 @RestController
 @RequestMapping("/clientes")
 @RequiredArgsConstructor
+@Slf4j
 public class ClienteController {
 
     private final ClienteService service;
