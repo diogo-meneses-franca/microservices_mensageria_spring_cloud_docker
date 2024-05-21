@@ -9,11 +9,12 @@ import java.math.BigDecimal;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-public class CartaoAprovado {
+@NoArgsConstructor
+public class DadosSolicitacaoEmissaoCartao {
 
-    private String nome;
-    private String bandeira;
-    private BigDecimal limite;
+    private Long idCartao;
+    private String cpf;
+    private String endereco;
+    private BigDecimal limiteLiberado;
 }

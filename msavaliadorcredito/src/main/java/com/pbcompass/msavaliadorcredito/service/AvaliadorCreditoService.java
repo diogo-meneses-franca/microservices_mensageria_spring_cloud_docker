@@ -1,10 +1,13 @@
 package com.pbcompass.msavaliadorcredito.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.pbcompass.msavaliadorcredito.entity.*;
 import com.pbcompass.msavaliadorcredito.exception.DadosClienteNotFoundException;
 import com.pbcompass.msavaliadorcredito.exception.ErroComunicacaoMicroservicosException;
+import com.pbcompass.msavaliadorcredito.exception.ErroSolicitacaoCartaoException;
 import com.pbcompass.msavaliadorcredito.feignClients.CartoesFeignClient;
 import com.pbcompass.msavaliadorcredito.feignClients.ClienteFeignClient;
+import com.pbcompass.msavaliadorcredito.mqueue.SolicitacaoEmissaoCartaoPublisher;
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -13,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,6 +25,7 @@ public class AvaliadorCreditoService {
 
     private final ClienteFeignClient clienteFeignClient;
     private final CartoesFeignClient cartoesFeignClient;
+    private final SolicitacaoEmissaoCartaoPublisher publisher;
 
     public SituacaoCliente buscarSituacaoCliente(String cpf){
         try {
@@ -50,7 +55,7 @@ public class AvaliadorCreditoService {
             BigDecimal limiteAprovado = fator.multiply(limiteBasico);
 
             CartaoAprovado cartaoAprovado = new CartaoAprovado();
-            cartaoAprovado.setCartao(cartao.getNome());
+            cartaoAprovado.setNome(cartao.getNome());
             cartaoAprovado.setBandeira(cartao.getBandeira());
             cartaoAprovado.setLimite(limiteAprovado);
 
@@ -60,5 +65,15 @@ public class AvaliadorCreditoService {
 
         return new RetornoAvaliacaoCliente(listaDeCartoesAprovados);
 
+    }
+
+    public ProtocoloSolicitacaoCartao solicitarEmissaoCartao(DadosSolicitacaoEmissaoCartao dados){
+        try {
+            publisher.solicitarCartao(dados);
+            var protocolo = UUID.randomUUID().toString();
+            return new ProtocoloSolicitacaoCartao(protocolo);
+        }catch (Exception e){
+            throw new ErroSolicitacaoCartaoException(e.getMessage());
+        }
     }
 }

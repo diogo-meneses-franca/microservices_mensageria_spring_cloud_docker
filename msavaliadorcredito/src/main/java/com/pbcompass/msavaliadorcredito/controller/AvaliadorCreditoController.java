@@ -1,9 +1,7 @@
 package com.pbcompass.msavaliadorcredito.controller;
 
-import com.pbcompass.msavaliadorcredito.entity.DadosAvaliacao;
-import com.pbcompass.msavaliadorcredito.entity.DadosCliente;
-import com.pbcompass.msavaliadorcredito.entity.RetornoAvaliacaoCliente;
-import com.pbcompass.msavaliadorcredito.entity.SituacaoCliente;
+import com.pbcompass.msavaliadorcredito.entity.*;
+import com.pbcompass.msavaliadorcredito.exception.ErroSolicitacaoCartaoException;
 import com.pbcompass.msavaliadorcredito.service.AvaliadorCreditoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -27,5 +25,15 @@ public class AvaliadorCreditoController {
     public ResponseEntity<RetornoAvaliacaoCliente> avaliar(@RequestBody DadosAvaliacao dados){
         RetornoAvaliacaoCliente resposta = avaliadorCreditoService.avaliar(dados);
         return ResponseEntity.ok().body(resposta);
+    }
+
+    @PostMapping("/solicitacoes-cartao")
+    public ResponseEntity solicitarCartao(@RequestBody DadosSolicitacaoEmissaoCartao dados){
+        try {
+            ProtocoloSolicitacaoCartao protocolo = avaliadorCreditoService.solicitarEmissaoCartao(dados);
+            return ResponseEntity.ok().body(protocolo);
+        }catch (ErroSolicitacaoCartaoException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 }
