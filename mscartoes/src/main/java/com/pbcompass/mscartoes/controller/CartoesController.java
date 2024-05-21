@@ -36,7 +36,7 @@ public class CartoesController {
     }
 
     @GetMapping(params = "cpf")
-    public ResponseEntity<List<CartoesPorClienteDto>> buscarCatoesPorCpf(String cpf){
+    public ResponseEntity<List<CartoesPorClienteDto>> buscarCartoesPorCpf(@RequestParam("cpf") String cpf){
         List<CartaoCliente> cartaoClienteList = cartaoClienteService.buscarCartoesPorCpf(cpf);
         List<CartoesPorClienteDto> resposta = new CartoesPorClienteDto().toDtoList(cartaoClienteList);
         return ResponseEntity.ok().body(resposta);
