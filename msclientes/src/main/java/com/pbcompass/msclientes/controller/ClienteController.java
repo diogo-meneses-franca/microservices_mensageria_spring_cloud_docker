@@ -12,7 +12,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 
 @RestController
-@RequestMapping("/clientes")
+@RequestMapping("api/clientes/v1")
 @RequiredArgsConstructor
 @Slf4j
 public class ClienteController {
