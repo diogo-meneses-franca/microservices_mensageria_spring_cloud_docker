@@ -10,13 +10,13 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonPropertyOrder({"nome", "CPF", "idade"})
+@JsonPropertyOrder({"nome", "cpf", "idade"})
 public class ClienteCadastrarDto {
 
     @JsonProperty("nome")
     private String nome;
 
-    @JsonProperty("CPF")
+    @JsonProperty("cpf")
     private String cpf;
 
     @JsonProperty("idade")
