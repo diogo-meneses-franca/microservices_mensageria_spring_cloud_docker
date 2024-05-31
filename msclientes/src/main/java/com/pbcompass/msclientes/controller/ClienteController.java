@@ -1,6 +1,7 @@
 package com.pbcompass.msclientes.controller;
 
 import com.pbcompass.msclientes.dto.ClienteCadastrarDto;
+import com.pbcompass.msclientes.dto.ClienteRespostaDto;
 import com.pbcompass.msclientes.entity.Cliente;
 import com.pbcompass.msclientes.service.ClienteService;
 import lombok.RequiredArgsConstructor;
@@ -24,8 +25,8 @@ public class ClienteController {
     @PostMapping(
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
             consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public ResponseEntity<Cliente> cadastrar(@RequestBody ClienteCadastrarDto dto){
-        Cliente cliente = service.cadastrar(dto.toCliente());
+    public ResponseEntity<ClienteRespostaDto> cadastrar(@RequestBody ClienteCadastrarDto dto){
+        ClienteRespostaDto cliente = service.cadastrar(dto);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .query("cpf={cpf}")
@@ -36,13 +37,13 @@ public class ClienteController {
     @GetMapping(
             params = "cpf",
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public ResponseEntity<Cliente> buscarPorCpf(@RequestParam("cpf") String cpf){
-        Cliente cliente = service.buscarPorCpf(cpf);
+    public ResponseEntity<ClienteRespostaDto> buscarPorCpf(@RequestParam("cpf") String cpf){
+        ClienteRespostaDto cliente = service.buscarPorCpf(cpf);
         return ResponseEntity.ok().body(cliente);
     }
 
     @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public ResponseEntity<List<Cliente>> buscarTodos(){
+    public ResponseEntity<List<ClienteRespostaDto>> buscarTodos(){
         return ResponseEntity.ok().body(service.buscarTodos());
     }
 }

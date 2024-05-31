@@ -1,5 +1,6 @@
 package com.pbcompass.msclientes.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +12,7 @@ import javax.persistence.Id;
 @Entity
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class Cliente {
 
     @Id
@@ -19,10 +21,4 @@ public class Cliente {
     private String nome;
     private String cpf;
     private Integer idade;
-
-    public Cliente(String nome, String cpf, Integer idade) {
-        this.cpf = cpf;
-        this.idade = idade;
-        this.nome = nome;
-    }
 }
